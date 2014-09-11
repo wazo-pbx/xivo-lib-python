@@ -38,21 +38,21 @@ def setup_logging(log_file, foreground=False, debug=False, loglevel=logging.INFO
     handler.setFormatter(formatter)
     root_logger.addHandler(handler)
 
+    if debug:
+        loglevel = logging.DEBUG
+
     if foreground:
         stdout_handler = logging.StreamHandler(sys.stdout)
-        stdout_handler.addFilter(_LogLevelFilter(lambda level: level <= logging.WARNING))
+        stdout_handler.addFilter(_LogLevelFilter(lambda level: level <= loglevel))
         stdout_handler.setFormatter(formatter)
         root_logger.addHandler(stdout_handler)
 
         stderr_handler = logging.StreamHandler(sys.stderr)
-        stderr_handler.addFilter(_LogLevelFilter(lambda level: level > logging.WARNING))
+        stderr_handler.addFilter(_LogLevelFilter(lambda level: level > loglevel))
         stderr_handler.setFormatter(formatter)
         root_logger.addHandler(stderr_handler)
 
-    if debug:
-        root_logger.setLevel(logging.DEBUG)
-    else:
-        root_logger.setLevel(loglevel)
+    root_logger.setLevel(loglevel)
 
 
 def get_log_level_by_name(loglevel_name):
