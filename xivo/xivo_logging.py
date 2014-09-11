@@ -29,7 +29,7 @@ class _LogLevelFilter(logging.Filter):
         return self._level_filter(record.levelno)
 
 
-def setup_logging(log_file, foreground=False, debug=False, log_format=DEFAULT_LOG_FORMAT):
+def setup_logging(log_file, foreground=False, debug=False, loglevel=logging.INFO, log_format=DEFAULT_LOG_FORMAT):
     root_logger = logging.getLogger()
 
     formatter = logging.Formatter(log_format)
@@ -52,4 +52,20 @@ def setup_logging(log_file, foreground=False, debug=False, log_format=DEFAULT_LO
     if debug:
         root_logger.setLevel(logging.DEBUG)
     else:
-        root_logger.setLevel(logging.INFO)
+        root_logger.setLevel(loglevel)
+
+
+def get_log_level_by_name(loglevel_name):
+    levels = {
+        'CRITICAL': logging.CRITICAL,
+        'ERROR': logging.ERROR,
+        'WARNING': logging.WARNING,
+        'WARN': logging.WARN,
+        'INFO': logging.INFO,
+        'DEBUG': logging.DEBUG,
+    }
+    loglevel_name = loglevel_name.upper()
+    if loglevel_name in levels:
+        return levels[loglevel_name]
+    else:
+        raise ValueError("Unknown log level %r" % loglevel_name)
