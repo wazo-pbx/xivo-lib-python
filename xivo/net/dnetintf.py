@@ -477,8 +477,6 @@ class DNETIntf:
         """
 
         self.inetxparser.reloadfile()
-        print netifaces.ifaddresses(interface)
-
         res = self.get_netiface_info(interface)
         if res == False:
             res = {'Message': 'No interface'}
