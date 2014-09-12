@@ -18,9 +18,9 @@
 import logging
 import subprocess
 
-from xivo_sysconf.sys.services import Services
+from xivo.sys.services import Services
 
-logger = logging.getLogger('xivo_sysconf.modules.xivoctl')
+logger = logging.getLogger('xivo.sys.xivoctl')
 
 class XiVOCTL(object):
 
