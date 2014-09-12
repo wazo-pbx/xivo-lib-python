@@ -324,7 +324,6 @@ class DNETIntf:
 
     def __init__(self, config):
         self.netcfg = NetworkConfig()
-        self.inetxparser = InetxParser(self.CONFIG['interfaces_file'])
 
         self.args = {}
         self.options = {}
@@ -349,6 +348,8 @@ class DNETIntf:
                       'interfaces_backup_path': os.path.join(config.general.backup_path, interfaces_path.lstrip(os.path.sep)),
                       'interfaces_custom_tpl_file' : interfaces_custom_tpl_file
                       }
+
+        self.inetxparser = InetxParser(self.CONFIG['interfaces_file'])
 
     def get_netiface_info(self, iface):
         try:
