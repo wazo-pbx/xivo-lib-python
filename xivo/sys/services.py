@@ -18,14 +18,9 @@
 import logging
 import os
 import subprocess
-import json
-
-from flask.helpers import make_response
-from ..sysconfd_server import app
 
 logger = logging.getLogger('xivo_sysconf.modules.services')
 SERVICE_DIR = '/etc/init.d'
-
 
 class InvalidActionException(ValueError):
     def __init__(self, service_name, action):
@@ -95,11 +90,3 @@ class Services(object):
             raise ("can't manage services")
 
         return output
-
-services = Services()
-
-@app.route('/services/<service>/<action>')
-def services_action(service, action):
-    res_action = services.action(service, action).rstrip()
-    res = json.dumps({"Message": res_action})
-    return make_response(res, 200, None, 'application/json')
