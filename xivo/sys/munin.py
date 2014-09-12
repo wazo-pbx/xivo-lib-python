@@ -16,9 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import logging, subprocess
-import json
 
-logger = logging.getLogger('xivo_sysconf.modules.munin')
+logger = logging.getLogger('xivo.sys.munin')
 
 class Munin(object):
     def __init__(self):

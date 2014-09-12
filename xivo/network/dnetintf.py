@@ -31,9 +31,7 @@ from xivo import xivo_config
 from xivo import system
 from xivo import yaml_json
 
-from xivo_sysconf.config import config
-
-log = logging.getLogger('xivo_sysconf.modules.dnetintf')
+logger = logging.getLogger('xivo.network.dnetintf')
 
 class InetxParser:
     MATCH_SINGLEARG = re.compile('^\s*([^\s]+)\s+([^\s#]+)').match
@@ -293,7 +291,7 @@ class NetworkConfig(dumbnet.intf):
 
             try:
                 # Set a new default gateway
-                log.info("Set a new default gateway: %r:%r", self.default_dst_ipv4, newgateway)
+                logger.info("Set a new default gateway: %r:%r", self.default_dst_ipv4, newgateway)
                 self.route.add(self.default_dst_ipv4, newgateway)
             except OSError, e:
                 # If an error has occurred, rollback
@@ -324,33 +322,33 @@ class DNETIntf:
     Network Interfaces class.
     """
 
-    interfaces_file = os.path.join(os.path.sep, 'etc', 'network', 'interfaces')
-    interfaces_path = os.path.dirname(config.network.interfaces_file)
-    interfaces_tpl_file = os.path.join('network', 'interfaces')
-    interfaces_custom_tpl_file = os.path.join(config.general.custom_templates_path, interfaces_tpl_file)
-
-    CONFIG = {'interfaces_file': interfaces_file,
-              'interfaces_tpl_file': interfaces_file,
-              'netiface_up_cmd': "sudo /sbin/ifup",
-              'netiface_down_cmd': "sudo /sbin/ifdown",
-              'netiface_ip_delete_cmd': "sudo /bin/ip link delete",
-              'lock_timeout': 60,
-              'interfaces_path': interfaces_path,
-              'backup_path': config.general.backup_path,
-              'xivo_config_path': config.general.xivo_config_path,
-              'templates_path': config.general.templates_path,
-              'custom_templates_path': config.general.custom_templates_path,
-              'interfaces_backup_file': os.path.join(config.general.backup_path, config.network.interfaces_file.lstrip(os.path.sep)),
-              'interfaces_backup_path': os.path.join(config.general.backup_path, interfaces_path.lstrip(os.path.sep)),
-              'interfaces_custom_tpl_file' : interfaces_custom_tpl_file
-              }
-
-    def __init__(self):
+    def __init__(self, config):
         self.netcfg = NetworkConfig()
         self.inetxparser = InetxParser(self.CONFIG['interfaces_file'])
 
         self.args = {}
         self.options = {}
+
+        interfaces_file = os.path.join(os.path.sep, 'etc', 'network', 'interfaces')
+        interfaces_path = os.path.dirname(config.network.interfaces_file)
+        interfaces_tpl_file = os.path.join('network', 'interfaces')
+        interfaces_custom_tpl_file = os.path.join(config.general.custom_templates_path, interfaces_tpl_file)
+
+        self.CONFIG = {'interfaces_file': interfaces_file,
+                      'interfaces_tpl_file': interfaces_file,
+                      'netiface_up_cmd': "sudo /sbin/ifup",
+                      'netiface_down_cmd': "sudo /sbin/ifdown",
+                      'netiface_ip_delete_cmd': "sudo /bin/ip link delete",
+                      'lock_timeout': 60,
+                      'interfaces_path': interfaces_path,
+                      'backup_path': config.general.backup_path,
+                      'xivo_config_path': config.general.xivo_config_path,
+                      'templates_path': config.general.templates_path,
+                      'custom_templates_path': config.general.custom_templates_path,
+                      'interfaces_backup_file': os.path.join(config.general.backup_path, config.network.interfaces_file.lstrip(os.path.sep)),
+                      'interfaces_backup_path': os.path.join(config.general.backup_path, interfaces_path.lstrip(os.path.sep)),
+                      'interfaces_custom_tpl_file' : interfaces_custom_tpl_file
+                      }
 
     def get_netiface_info(self, iface):
         try:
