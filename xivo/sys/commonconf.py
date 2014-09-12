@@ -59,7 +59,7 @@ class CommonConf(object):
                 output = p.stdout.read()
             except OSError:
                 traceback.print_exc()
-                raise HttpReqError(500, "can't apply ha changes")
+                raise ("can't apply ha changes")
 
     def generate(self, args):
         self.enable_disable_dhcpd(args)
