@@ -17,7 +17,7 @@ setup(
         'xivo.cli.command',
         'xivo.cli.completion',
         'xivo.cli.source',
-        'xivo.network',
+        'xivo.net',
         'xivo.ssl',
         'xivo.sys',
         'xivo.BackSQL',
