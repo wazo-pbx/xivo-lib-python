@@ -1,3 +1,4 @@
+flask-restful==0.3.9
 kombu
 pyhamcrest
 pytest>=9.0
